@@ -7,13 +7,11 @@ import (
 	"net/http"
 )
 
-var validate *validator.Validate
-
 func main() {
-	validate = validator.New()
 	e := echo.New()
-
-	e.POST("/verify", handleVerify)
+	vld := validator.New()
+	handler := handlers{vld}
+	e.POST("/verify", handler.verify)
 	l, err := net.Listen("tcp", "127.0.0.1:9009")
 	if err != nil {
 		return
